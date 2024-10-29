@@ -3,7 +3,7 @@
 Welcome to the HausaMediaLab Project! Thank you for considering contributing to this project, which aims to develop a powerful, user-friendly Python library for media processing and Hausa language translation. This document provides guidelines to help you contribute effectively and maintain a high standard of code quality.
 
 ## Table of Contents
-1. [Code of Conduct](##-1.-Code-of-Conduct)
+1. [Code of Conduct](#code-of-conduct)
 2. [How to Contribute](#how-to-contribute)
 3. [Project Structure](#project-structure)
 4. [Getting Started](#getting-started)
