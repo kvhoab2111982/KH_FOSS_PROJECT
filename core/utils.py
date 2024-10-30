@@ -1,3 +1,10 @@
+"""
+This module provides utility functions.
+
+Functions:
+    check_file_exists(file_path): Checks if a file exists at the given file path.
+"""
+
 import os
 
 def check_file_exists(file_path):

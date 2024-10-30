@@ -1,3 +1,10 @@
+"""
+This module contains functions for processing videos.
+
+Functions:
+    resize_video(video_path, output_video_path, width, height):
+"""
+
 from moviepy.editor import VideoFileClip
 
 def resize_video(video_path, output_video_path, width, height):
@@ -18,5 +25,4 @@ def resize_video(video_path, output_video_path, width, height):
     resized_video.write_videofile(output_video_path)
     resized_video.close()
     video.close()
-    
     return output_video_path

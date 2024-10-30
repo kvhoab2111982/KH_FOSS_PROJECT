@@ -1,3 +1,8 @@
+'''This module provides functionality to extract audio from video files.
+
+Functions:
+    extract_audio(video_path, output_audio_path):'''
+
 from moviepy.editor import VideoFileClip
 
 def extract_audio(video_path, output_audio_path):
@@ -16,5 +21,5 @@ def extract_audio(video_path, output_audio_path):
     audio.write_audiofile(output_audio_path)
     audio.close()
     video.close()
-    
+
     return output_audio_path

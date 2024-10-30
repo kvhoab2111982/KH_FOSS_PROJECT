@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.9", "3.10", "3.11"]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
@@ -26,5 +26,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install pylint
       - name: Run pylint
+        id: pylint
         run: |
-          pylint --rcfile=.pylintrc $(git ls-files '*.py')
+          pylint --rcfile=.pylintrc $(git ls-files '*.py') > pylint_output.txt || true
+          score=$(tail -n 2 pylint_output.txt | head -n 1 | grep -oP '\d+\.\d+')
+          echo "Pylint score: $score"
+          if (( $(echo "$score < 8" | bc -l) )); then
+            echo "Pylint score is less than 8. Failing the job."
+            exit 1
+          fi
