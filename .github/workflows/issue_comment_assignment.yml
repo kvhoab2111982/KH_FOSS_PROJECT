@@ -1,0 +1,45 @@
+name: Issue Comment Assignment
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  assign_issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if comment contains a request to work on a function
+        id: comment_check
+        run: |
+          COMMENT_BODY="${{ github.event.comment.body }}"
+          if [[ "$COMMENT_BODY" =~ "Implement" ]]; then
+            echo "Requested function found"
+            echo "::set-output name=requested_function::$(echo "$COMMENT_BODY" | grep -o 'Implement .*' | awk '{print $2}')"
+          else
+            echo "No function requested"
+            echo "::set-output name=requested_function::"
+          fi
+
+      - name: Assign issue and update main issue
+        if: steps.comment_check.outputs.requested_function != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FUNCTION_NAME="${{ steps.comment_check.outputs.requested_function }}"
+          ISSUE_NUMBER=$(echo "$FUNCTION_NAME" | grep -o '[0-9]*')
+          USERNAME="${{ github.actor }}"
+          MAIN_ISSUE_NUMBER=0 # Set this to the main issue number for Audio or Video
+          
+          # Assign the issue to the user
+          curl -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/assignees \
+            -d "{\"assignees\": [\"$USERNAME\"]}"
+
+          # Update the main issue description
+          curl -X PATCH \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues/$MAIN_ISSUE_NUMBER \
+            -d "{\"body\": \"@${USERNAME} is working on $FUNCTION_NAME.\"}"
