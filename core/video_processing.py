@@ -1,7 +1,5 @@
 from moviepy.editor import VideoFileClip, TextClip, CompositeVideoClip
 
-
-
 def resize_video(video_path, output_video_path, width, height):
     """
     Resizes the input video to the specified width and height.
@@ -37,7 +35,6 @@ def add_watermark(video_path, watermark_text, output_video_path, position=('righ
     """
     video = VideoFileClip(video_path)
 
-    # Tạo TextClip cho watermark
     watermark = TextClip(
         watermark_text,
         fontsize=24,
@@ -45,10 +42,10 @@ def add_watermark(video_path, watermark_text, output_video_path, position=('righ
         font='Arial',
         stroke_color='black',
         stroke_width=1,
-        method='caption'  # Sử dụng caption để tránh lỗi render
-    ).set_duration(video.duration).set_opacity(0.6)  # Đặt độ mờ cho watermark
+        method='caption'  
+    ).set_duration(video.duration).set_opacity(0.6)
 
-    # Thiết lập vị trí của watermark
+
     if position == ('right', 'bottom'):
         watermark = watermark.set_position(("right", "bottom"))
     elif position == ('left', 'bottom'):
@@ -60,13 +57,12 @@ def add_watermark(video_path, watermark_text, output_video_path, position=('righ
     else:
         watermark = watermark.set_position(("center", "center"))
 
-    # Kết hợp video và watermark
     watermarked_video = CompositeVideoClip([video, watermark])
 
-    # Xuất video đã có watermark
+
     watermarked_video.write_videofile(output_video_path, codec='libx264', audio_codec='aac')
 
-    # Đóng tài nguyên
+
     video.close()
     watermarked_video.close()
     return output_video_path

@@ -2,8 +2,6 @@ import unittest
 import os
 from core.video_processing import resize_video, add_watermark
 
-
-
 class TestVideoProcessing(unittest.TestCase):
    '''Test cases for the video processing functions.'''
 
@@ -38,9 +36,6 @@ class TestVideoProcessing(unittest.TestCase):
 #            print(f"[INFO] Output video '{self.output_video_path}' đã được tạo mới.")
 #        if os.path.exists(self.watermarked_video_path):
 #            print(f"[INFO] Watermarked video '{self.watermarked_video_path}' đã được tạo mới.")
-
-
-
 
 if __name__ == "__main__":
    unittest.main()
